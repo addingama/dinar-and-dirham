@@ -1,11 +1,22 @@
 import {
-  createSwitchNavigator,
   createAppContainer
 } from 'react-navigation'
-import SampleNavigator from './SampleNavigation'
+import { createStackNavigator } from 'react-navigation-stack'
+import ListingScreen from '../screens/listing/ListingScreen'
+import Color from '../theme/Color'
 
-const AppNavigator = createSwitchNavigator({
-  Sample: { screen: SampleNavigator }
+
+
+const AppNavigator = createStackNavigator({
+  Listing: { screen: ListingScreen }
+}, {
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: Color.primary
+    },
+    headerTintColor: Color.primaryText,
+    title: 'Muamalah Dinar Dirham'
+  }
 })
 
 export default createAppContainer(AppNavigator)

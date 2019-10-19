@@ -7,11 +7,12 @@ import {
   StatusBar
 } from 'react-native'
 import AppNavigation from './navigation/AppNavigation'
+import Color from './theme/Color'
 
 const RootContainer = () => {
   return (
     <>
-      <StatusBar barStyle='dark-content' />
+      <StatusBar barStyle='light-content' backgroundColor={Color.primaryDark} />
       <AppNavigation />
     </>
   )

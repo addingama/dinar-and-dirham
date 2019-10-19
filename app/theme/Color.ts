@@ -1,15 +1,16 @@
 const Palette = {
-  white: '#ffffff'
+  white: '#ffffff',
+  black: '#000000'
 }
 const Color = {
-  primary: '#d32f2f',
-  primaryLight: '#ff6659',
-  primaryDark: '#9a0007',
-  secondary: '#3f51b5',
-  secondaryLight: '#757de8',
-  secondaryDark: '#002984',
+  primary: '#212121',
+  primaryLight: '#484848',
+  primaryDark: '#000000',
+  secondary: '#ffb300',
+  secondaryLight: '#ffe54c',
+  secondaryDark: '#c68400',
   primaryText: Palette.white,
-  secondaryText: Palette.white
+  secondaryText: Palette.black
 }
 
 export default Color
