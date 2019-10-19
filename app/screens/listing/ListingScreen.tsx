@@ -5,6 +5,7 @@ import { SearchBar, ListItem, Card } from 'react-native-elements';
 import Muamalah from './Muamalah'
 import Color from '../../theme/Color';
 import ListingItem from './ListingItem';
+import _ from 'lodash'
 
 const source = require("./muamalah.json")
 const listingMuamalah: Muamalah[] = source.data
@@ -15,32 +16,51 @@ type P = {
 };
 
 type S = {
-  keyword?: string
+  keyword?: string,
+  data: Muamalah[]
 };
 
 
 class ListingScreen extends Component<P, S> {
   state = { 
-    keyword: ''
+    keyword: '',
+    data: listingMuamalah
   }
 
+  search = (keyword: string) => {
+    this.setState({ keyword })
+    if (keyword === '') {
+      this.setState({ data: listingMuamalah })
+    } else {
+      const searchResult = _.filter(listingMuamalah, (item: Muamalah) => {
+        keyword = keyword.toLowerCase()
+
+        const foundName = _.includes(item.name.toLowerCase(), keyword)
+        const foundAddress = _.includes(item.address.toLowerCase(), keyword)
+        const foundProduct = _.filter(item.products, (p: string) => _.includes(p.toLowerCase(), keyword)).length > 0
+        const foundService = _.filter(item.services, (p: string) => _.includes(p.toLowerCase(), keyword)).length > 0
+        return foundName || foundAddress || foundProduct || foundService
+      })
+      this.setState({ data: searchResult })
+    }
+  }
   renderItem = ({item, index}: {item: Muamalah, index: number}) => {
     return (
       <ListingItem item={item}/>
     )
   }
   render() {
-    const { keyword } = this.state
+    const { keyword, data } = this.state
     return (
       <>
         <SearchBar 
           placeholder='Kata kunci pencarian'
           value={keyword}
           platform={Platform.OS === 'ios' ? 'ios' : 'android'}
-          onChangeText={(keyword: string) => this.setState({keyword})} />
+          onChangeText={(keyword: string) => this.search(keyword)}/>
         <FlatList 
           keyExtractor={(item, index) => `muamalah_${index}`}
-          data={listingMuamalah}
+          data={data}
           renderItem={this.renderItem}
         />
       </>
