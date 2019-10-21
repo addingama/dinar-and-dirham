@@ -1,10 +1,10 @@
 import React from 'react'
-import Muamalah from './Muamalah';
 import { Card, Text, Icon } from 'react-native-elements';
 import Color from '../../theme/Color';
 import { TextStyle, View, ViewStyle } from 'react-native';
 import ProductListing from './ProductListing';
 import ServiceListing from './ServiceListing';
+import { MuamalahSnapshot } from '../../models';
 
 const titleStyle: TextStyle = {
   color: Color.secondaryDark,
@@ -24,7 +24,7 @@ const addressStyle: TextStyle = {
   flex: 1
 }
 
-const ListingItem = ({item} : {item: Muamalah}) => {
+const ListingItem = ({item} : {item: MuamalahSnapshot}) => {
   return (
     <Card>
       <Text style={titleStyle}>{item.name}</Text>

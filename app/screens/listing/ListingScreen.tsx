@@ -1,71 +1,66 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Text, Platform, FlatList } from 'react-native';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { SearchBar, ListItem, Card } from 'react-native-elements';
-import Muamalah from './Muamalah'
 import Color from '../../theme/Color';
 import ListingItem from './ListingItem';
 import _ from 'lodash'
+import { RootStore, useRootStore, MuamalahSnapshot, MuamalahStore } from '../../models';
+import { inject, observer } from 'mobx-react';
+import { getSnapshot } from 'mobx-state-tree';
+
 
 const source = require("./muamalah.json")
-const listingMuamalah: Muamalah[] = source.data
 
 
-type P = {
-  navigation: NavigationStackScreenProps
-};
+interface P extends NavigationStackScreenProps<{}> {
+  muamalahStore: MuamalahStore
+}
 
-type S = {
-  keyword?: string,
-  data: Muamalah[]
-};
+interface S {
+  keyword: string
+}
 
-
+@inject("muamalahStore")
+@observer
 class ListingScreen extends Component<P, S> {
-  state = { 
-    keyword: '',
-    data: listingMuamalah
-  }
-
-  search = (keyword: string) => {
-    this.setState({ keyword })
-    if (keyword === '') {
-      this.setState({ data: listingMuamalah })
-    } else {
-      const searchResult = _.filter(listingMuamalah, (item: Muamalah) => {
-        keyword = keyword.toLowerCase()
-
-        const foundName = _.includes(item.name.toLowerCase(), keyword)
-        const foundAddress = _.includes(item.address.toLowerCase(), keyword)
-        const foundProduct = _.filter(item.products, (p: string) => _.includes(p.toLowerCase(), keyword)).length > 0
-        const foundService = _.filter(item.services, (p: string) => _.includes(p.toLowerCase(), keyword)).length > 0
-        return foundName || foundAddress || foundProduct || foundService
-      })
-      this.setState({ data: searchResult })
+  constructor(props: P) {
+    super(props)
+    this.state = {
+      keyword: ''
     }
   }
-  renderItem = ({item, index}: {item: Muamalah, index: number}) => {
+
+  componentDidMount() {
+    this.props.muamalahStore.getAll()
+  }
+  renderItem = ({item, index}: {item: MuamalahSnapshot, index: number}) => {
     return (
       <ListingItem item={item}/>
     )
   }
+  
   render() {
-    const { keyword, data } = this.state
+    const {keyword} = this.state
+    const {muamalahStore} = this.props
     return (
       <>
         <SearchBar 
           placeholder='Kata kunci pencarian'
+          platform={'ios'}
           value={keyword}
-          platform={Platform.OS === 'ios' ? 'ios' : 'android'}
-          onChangeText={(keyword: string) => this.search(keyword)}/>
+          onChangeText={(keyword: string) => this.setState({keyword}, ()=> {
+            muamalahStore.filter(keyword)
+          })}/>
         <FlatList 
           keyExtractor={(item, index) => `muamalah_${index}`}
-          data={data}
+          data={getSnapshot(muamalahStore.stores)}
           renderItem={this.renderItem}
         />
       </>
     );
   }
 }
+
 
 export default ListingScreen;
