@@ -5,6 +5,9 @@ import { TextStyle, View, ViewStyle } from 'react-native';
 import ProductListing from './ProductListing';
 import ServiceListing from './ServiceListing';
 import { MuamalahSnapshot } from '../../models';
+import { Button } from '../../components/button';
+import OpenMap from "react-native-open-map";
+import call from 'react-native-phone-call';
 
 const titleStyle: TextStyle = {
   color: Color.secondaryDark,
@@ -12,15 +15,16 @@ const titleStyle: TextStyle = {
   marginBottom:5
 }
 
-const addressContainerStyle: ViewStyle = {
+const actionContainer: ViewStyle = {
   flexDirection: 'row',
-  marginBottom: 10,
-  alignItems: 'center'
+  marginVertical: 10,
+  alignItems: 'center',
+  justifyContent: 'space-around'
 }
 const addressStyle: TextStyle = {
   fontWeight: "300",
   color: Color.primaryLight,
-  marginLeft: 15,
+  fontSize: 12,
   flex: 1
 }
 
@@ -28,9 +32,28 @@ const ListingItem = ({item} : {item: MuamalahSnapshot}) => {
   return (
     <Card>
       <Text style={titleStyle}>{item.name}</Text>
-      <View style={addressContainerStyle}>
-        <Icon name="location" type="entypo" color={Color.primaryLight}/>
-        <Text style={addressStyle}>{item.address}</Text>
+      <Text style={addressStyle}>{item.address}</Text>
+      <View style={actionContainer}>
+        {item.phone != "" && (
+          <Button 
+          preset="secondary" 
+          title="Telepon" 
+          icon={<Icon name="phone"/>}
+          onPress={() => {
+            call({
+              number: item.phone, // String value with the number to call
+              prompt: true
+            })
+          }}/>
+        )}
+       
+       <Button 
+        preset="secondary" 
+        title="Lokasi" 
+        icon={<Icon name="map"/>}
+        onPress={() => {
+          OpenMap.show(item.location)
+        }}/>
       </View>
       <ProductListing items={item.products}/>
       <ServiceListing items={item.services}/>

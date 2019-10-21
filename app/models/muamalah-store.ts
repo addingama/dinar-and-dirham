@@ -6,9 +6,14 @@ const source = require("./muamalah.json")
 export const MuamalahModel = types.model("Muamalah", {
   name: types.string,
   address: types.string,
-  phone: types.string,
+  phone: types.maybeNull(types.string),
+  website: types.maybeNull(types.string),
   products: types.array(types.string),
-  services: types.array(types.string)
+  services: types.array(types.string),
+  location: types.maybeNull(types.model({
+    latitude: types.optional(types.number, 0),
+    longitude: types.optional(types.number, 0)
+  }))
 })
 
 export type Muamalah = typeof MuamalahModel.Type
