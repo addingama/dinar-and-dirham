@@ -7,8 +7,7 @@
  */
 
 import React from 'react'
-
-import RootContainer from './RootContainer'
+import codePush from "react-native-code-push"
 import { ThemeProvider } from 'react-native-elements'
 import RNETheme from './theme/RNETheme'
 import { RootStore, setupRootStore } from "./models"
@@ -16,6 +15,8 @@ import { Provider } from "mobx-react"
 import { StatusBar } from 'react-native'
 import AppNavigation from './navigation/AppNavigation'
 import Color from './theme/Color'
+
+let codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
 
 interface AppState {
   rootStore?: RootStore
@@ -72,4 +73,4 @@ export class App extends React.Component<{}, AppState> {
   }
 }
 
-export default App
+export default codePush(codePushOptions)(App)

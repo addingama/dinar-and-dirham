@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "codepush:publish_ios": "code-push release-react DnD_ios ios -m -d Production",
+    "codepush:publish_android": "code-push release-react DnD_android android -m -d Production"
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.6.0",
@@ -23,6 +25,7 @@
     "mobx-state-tree": "^3.14.1",
     "react": "16.9.0",
     "react-native": "0.61.2",
+    "react-native-code-push": "^5.7.0",
     "react-native-elements": "^1.2.6",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-open-map": "^0.3.4",

@@ -1,3 +1,4 @@
 <resources>
+	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">U3zVQAUHEI4jYkLnnyqhqbQVTAphwABrt-cDsM</string>
     <string name="app_name">Muamalah DnD</string>
 </resources>

@@ -42,7 +42,7 @@ class ListingScreen extends Component<P, S> {
     return (
       <>
         <SearchBar 
-          placeholder='Kata kunci pencarian'
+          placeholder='Kata kunci pencarian...'
           platform={'ios'}
           value={keyword}
           onChangeText={(keyword: string) => this.setState({keyword}, ()=> {
